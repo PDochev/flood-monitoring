@@ -18,25 +18,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { Reading } from "@/lib/definitions";
+import type { Reading, StationChartProps, ChartData } from "@/lib/definitions";
 import { Loader2 } from "lucide-react";
 
-interface StationChartProps {
-  stationId: string | null;
-}
-
-interface ChartData {
-  dateTime: string;
-  time: string;
-  stage?: number;
-  downstream?: number;
-}
-
 export default function StationChart({ stationId }: StationChartProps) {
-  const [readings, setReadings] = useState<Reading[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasReadings, setHasReadings] = useState(false);
 
   useEffect(() => {
     async function fetchReadings() {
@@ -44,6 +33,7 @@ export default function StationChart({ stationId }: StationChartProps) {
 
       setLoading(true);
       setError(null);
+      setHasReadings(false);
 
       try {
         const response = await fetch(
@@ -55,7 +45,9 @@ export default function StationChart({ stationId }: StationChartProps) {
         }
 
         const data = await response.json();
-        setReadings(data);
+
+        // Check if we have any readings at all
+        setHasReadings(data.length > 0);
 
         // Process the data for the chart
         const processedData = processReadingsData(data);
@@ -127,56 +119,62 @@ export default function StationChart({ stationId }: StationChartProps) {
           <div className="flex justify-center items-center h-[400px] text-red-500">
             {error}
           </div>
-        ) : chartData.length > 0 ? (
-          <div className="h-[400px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="time"
-                  label={{
-                    value: "Time",
-                    position: "insideBottomRight",
-                    offset: -10,
-                  }}
-                />
-                <YAxis
-                  label={{
-                    value: "Water Level (m)",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                />
-                <Tooltip />
-                <Legend />
-                {chartData.some((item) => item.stage !== undefined) && (
-                  <Line
-                    type="monotone"
-                    dataKey="stage"
-                    name="Stage Level"
-                    stroke="#2563eb"
-                    activeDot={{ r: 8 }}
-                    strokeWidth={2}
+        ) : hasReadings ? (
+          chartData.length > 0 ? (
+            <div className="h-[400px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={chartData}
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="time"
+                    label={{
+                      value: "Time",
+                      position: "insideBottomRight",
+                      offset: -10,
+                    }}
                   />
-                )}
-                {chartData.some((item) => item.downstream !== undefined) && (
-                  <Line
-                    type="monotone"
-                    dataKey="downstream"
-                    name="Downstream Level"
-                    stroke="#16a34a"
-                    strokeWidth={2}
+                  <YAxis
+                    label={{
+                      value: "Water Level (m)",
+                      angle: -90,
+                      position: "insideLeft",
+                    }}
                   />
-                )}
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+                  <Tooltip />
+                  <Legend />
+                  {chartData.some((item) => item.stage !== undefined) && (
+                    <Line
+                      type="monotone"
+                      dataKey="stage"
+                      name="Stage Level"
+                      stroke="#2563eb"
+                      activeDot={{ r: 8 }}
+                      strokeWidth={2}
+                    />
+                  )}
+                  {chartData.some((item) => item.downstream !== undefined) && (
+                    <Line
+                      type="monotone"
+                      dataKey="downstream"
+                      name="Downstream Level"
+                      stroke="#16a34a"
+                      strokeWidth={2}
+                    />
+                  )}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-[400px] text-muted-foreground">
+              No data available for this station
+            </div>
+          )
         ) : (
           <div className="flex justify-center items-center h-[400px] text-muted-foreground">
-            No data available for this station
+            No readings available for the past 24 hours
           </div>
         )}
       </CardContent>

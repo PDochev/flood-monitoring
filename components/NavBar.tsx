@@ -3,12 +3,12 @@ import Image from "next/image";
 
 export default function NavBar() {
   return (
-    <nav className="sticky top-0 z-10 bg-amber-50">
+    <nav className="sticky top-0 z-10 bg-gray-800">
       <ul className="w-full flex flex-row h-16 justify-between items-center p-4">
         <li>
           <Link
             href="/"
-            className="flex items-center font-medium justify-center gap-2 py-3 px-4 "
+            className="flex items-center font-medium justify-center gap-2 py-3 px-4 text-white"
           >
             <Image
               src="/flood.svg"

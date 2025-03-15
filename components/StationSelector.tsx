@@ -31,7 +31,7 @@ export default function StationSelector({
 
   return (
     <div className="flex justify-center items-center gap-4">
-      <Label>Select a station</Label>
+      <Label>Select a measurement station</Label>
       <Select
         onValueChange={handleStationChange}
         value={selectedStation || undefined}

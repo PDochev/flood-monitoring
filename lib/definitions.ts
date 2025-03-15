@@ -14,3 +14,14 @@ export interface Reading {
 export interface ReadingsResponse {
   items: Reading[];
 }
+
+export interface StationChartProps {
+  stationId: string | null;
+}
+
+export interface ChartData {
+  dateTime: string;
+  time: string;
+  stage?: number;
+  downstream?: number;
+}
