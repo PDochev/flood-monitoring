@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default async function NavBar() {
+export default function NavBar() {
   return (
     <nav className="sticky top-0 z-10 bg-amber-50">
       <ul className="w-full flex flex-row h-16 justify-between items-center p-4">
