@@ -11,29 +11,48 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Station } from "@/lib/definitions";
+import type { Station } from "@/lib/definitions";
 
-export default function StationSelector({ stations }: { stations: Station[] }) {
+interface StationSelectorProps {
+  stations: Station[];
+  onStationSelect: (stationId: string | null) => void;
+}
+
+export default function StationSelector({
+  stations,
+  onStationSelect,
+}: StationSelectorProps) {
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
+
+  const handleStationChange = (value: string) => {
+    setSelectedStation(value);
+    onStationSelect(value);
+  };
 
   return (
     <div className="flex justify-center items-center gap-4">
       <Label>Select a station</Label>
       <Select
-        onValueChange={setSelectedStation}
+        onValueChange={handleStationChange}
         value={selectedStation || undefined}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[280px]">
           <SelectValue placeholder="Select a station" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Stations</SelectLabel>
-            {stations.map((station) => (
-              <SelectItem key={station["@id"]} value={station["@id"]}>
-                {station.catchmentName || station.label || "Unnamed Station"}
+            {stations && stations.length > 0 ? (
+              stations.map((station) => (
+                <SelectItem key={station["@id"]} value={station["@id"]}>
+                  {station.catchmentName || station.label || "Unnamed Station"}
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem value="no-stations" disabled>
+                No stations available
               </SelectItem>
-            ))}
+            )}
           </SelectGroup>
         </SelectContent>
       </Select>

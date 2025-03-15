@@ -1,4 +1,5 @@
-import StationSelector from "@/components/StationSelector";
+import { Suspense } from "react";
+import StationDataContainer from "../components/station-data-container";
 import NavBar from "@/components/NavBar";
 import { getStations } from "@/lib/api";
 
@@ -9,7 +10,7 @@ export default async function Home() {
   return (
     <>
       <NavBar />
-      <main className="mx-auto max-w-[1960px] mb-1">
+      <main className="mx-auto max-w-[1960px] p-4 mb-1 h-svh">
         <div className="flex justify-center items-center">
           <h1 className="scroll-m-20 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-8">
             Welcome to FloodWatch
@@ -23,9 +24,11 @@ export default async function Home() {
           </p>
         </div>
 
-        <StationSelector stations={stations} />
+        <Suspense fallback={<div>Loading stations...</div>}>
+          <StationDataContainer stations={stations} />
+        </Suspense>
       </main>
-      {/* <footer className="bg-gray-800 text-white py-8">
+      <footer className="bg-gray-800 text-white py-8 mt-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
@@ -61,7 +64,7 @@ export default async function Home() {
             </p>
           </div>
         </div>
-      </footer> */}
+      </footer>
     </>
   );
 }
