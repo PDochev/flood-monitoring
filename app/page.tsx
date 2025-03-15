@@ -10,14 +10,14 @@ export default async function Home() {
   return (
     <>
       <NavBar />
-      <main className="mx-auto max-w-[1960px] p-4 mb-1 h-svh">
+      <main className="mx-auto max-w-[1960px] p-4 mb-1">
         <div className="flex justify-center items-center">
-          <h1 className="scroll-m-20 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-8">
+          <h1 className="scroll-m-20 text-3xl sm:text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-8">
             Welcome to FloodWatch
           </h1>
         </div>
         <div className="mb-8">
-          <p className="text-xl text-center text-gray-700 max-w-3xl mx-auto">
+          <p className="text-md md:text-xl text-center text-gray-700 max-w-3xl mx-auto">
             Monitor real-time water levels at flood monitoring stations across
             the United Kingdom. Select a station to view detailed water level
             data for the past 24 hours.
@@ -28,7 +28,7 @@ export default async function Home() {
           <StationDataContainer stations={stations} />
         </Suspense>
       </main>
-      <footer className="bg-gray-800 text-white py-8 mt-12">
+      <footer className="bg-gray-800 text-white py-8 ">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">

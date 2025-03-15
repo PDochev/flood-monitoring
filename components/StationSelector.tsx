@@ -30,8 +30,8 @@ export default function StationSelector({
   };
 
   return (
-    <div className="flex justify-center items-center gap-4">
-      <Label>Select a measurement station</Label>
+    <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+      <Label className="text-md">Select a measurement station</Label>
       <Select
         onValueChange={handleStationChange}
         value={selectedStation || undefined}
@@ -39,7 +39,7 @@ export default function StationSelector({
         <SelectTrigger className="w-[280px]">
           <SelectValue placeholder="Select a station" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="w-[280px]">
           <SelectGroup>
             <SelectLabel>Stations</SelectLabel>
             {stations && stations.length > 0 ? (

@@ -15,13 +15,13 @@ export default function StationDataContainer({
   );
 
   return (
-    <>
+    <div>
       <StationSelector
         stations={stations}
         onStationSelect={setSelectedStationId}
       />
 
       {selectedStationId && <StationChart stationId={selectedStationId} />}
-    </>
+    </div>
   );
 }
