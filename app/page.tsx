@@ -15,9 +15,17 @@ export default async function Home() {
             Welcome to FloodWatch
           </h1>
         </div>
+        <div className="mb-8">
+          <p className="text-xl text-center text-gray-700 max-w-3xl mx-auto">
+            Monitor real-time water levels at flood monitoring stations across
+            the United Kingdom. Select a station to view detailed water level
+            data for the past 24 hours.
+          </p>
+        </div>
+
         <StationSelector stations={stations} />
       </main>
-      <footer className="bg-gray-800 text-white py-8">
+      {/* <footer className="bg-gray-800 text-white py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
@@ -53,7 +61,7 @@ export default async function Home() {
             </p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </>
   );
 }
