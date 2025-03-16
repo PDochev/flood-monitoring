@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import StationSelector from "@/components/StationSelector";
+import StationSelector from "@/components/station-selector";
 import StationChart from "@/components/station-chart";
 import type { Station } from "@/lib/definitions";
 

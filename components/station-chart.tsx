@@ -63,18 +63,23 @@ export default function StationChart({ stationId }: StationChartProps) {
     fetchReadingsData();
   }, [fetchReadingsData]);
 
-  useEffect(() => {
-    fetchReadingsData();
-  }, [fetchReadingsData]);
-
   // Process the readings data for the chart
   function processReadingsData(readings: Reading[]): ChartData[] {
-    // Group readings by dateTime
-    const groupedByDateTime = readings.reduce((acc, reading) => {
+    // Record<K, V> is a utility type in TypeScript that creates an object type with keys of type K and values of type V.
+    // groupedReadings is an object
+    // Its keys are strings in this case, date-time strings (timestapms)
+    // Its values are objects of type ChartData
+    const groupedReadings: Record<string, ChartData> = {};
+
+    // Loop through each reading
+    for (const reading of readings) {
+      // Get the dateTime from the reading
       const dateTime = reading.dateTime;
 
-      if (!acc[dateTime]) {
-        acc[dateTime] = {
+      // This block of code is checking if an entry for a specific timestamp already exists in the groupedReadings object.
+      // If it doesn't, it creates a new entry.
+      if (!groupedReadings[dateTime]) {
+        groupedReadings[dateTime] = {
           dateTime,
           time: new Date(dateTime).toLocaleTimeString([], {
             hour: "2-digit",
@@ -83,25 +88,31 @@ export default function StationChart({ stationId }: StationChartProps) {
         };
       }
 
-      // Check the measure type and add the value to the appropriate property
+      // Add the appropriate value based on the measure type
+      // The measure type is a string that describes the type of reading
+      // It can be "stage" or "downstage"
+      // If the measure type includes "stage" but not "downstage", we set the stage value
+      // If the measure type includes "downstage", we set the downstream value
       if (
         reading.measure.includes("stage") &&
         !reading.measure.includes("downstage")
       ) {
-        acc[dateTime].stage = reading.value;
+        groupedReadings[dateTime].stage = reading.value;
       } else if (reading.measure.includes("downstage")) {
-        acc[dateTime].downstream = reading.value;
+        groupedReadings[dateTime].downstream = reading.value;
       }
+    }
 
-      return acc;
-    }, {} as Record<string, ChartData>);
-
-    // Convert to array and sort by dateTime
-    return Object.values(groupedByDateTime).sort(
+    // Object.values() returns an array of a given object's own enumerable property values
+    // We sort the array of values by date-time
+    // This way we get an array of ChartData objects sorted by date-time
+    // This array will be used to render the chart
+    return Object.values(groupedReadings).sort(
       (a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
     );
   }
 
+  // Check if the data has stage or downstream values
   const hasStageData = chartData.some((item) => item.stage !== undefined);
   const hasDownstreamData = chartData.some(
     (item) => item.downstream !== undefined
@@ -109,6 +120,7 @@ export default function StationChart({ stationId }: StationChartProps) {
 
   // Get a subset of data for the table to keep it concise
   // Show every hour instead of every 15 minutes
+  // This way we reduce the number of rows in the table
   const tableData = chartData.filter((_, index) => index % 4 === 0);
 
   if (!stationId) {

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import StationDataContainer from "../components/station-data-container";
 import NavBar from "@/components/NavBar";
 import { getStations } from "@/lib/api";
+import { LinkedIn, Github } from "@/components/icons";
 
 export default async function Home() {
   const stations = await getStations();
@@ -58,18 +59,32 @@ export default async function Home() {
               </a>
             </div>
           </div>
-          <div className="mt-8 border-t border-gray-500 pt-4 text-center text-gray-400 text-sm mb-2">
-            <p>
+          <div className="flex flex-row mt-8 border-t border-gray-500 pt-4 text-center text-gray-400 text-sm mb-2">
+            <p className="flex items-center flex-wrap justify-center w-full">
               &copy; {new Date().getFullYear()} FloodWatch. All rights reserved.
-              Made by {""}
-              <a
-                href="https://github.com/PDochev/flood-monitoring"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 hover:text-black underline hover:animate-pulse"
-              >
-                Plamen Dochev
-              </a>
+              Made by &nbsp;
+              <span className="text-gray-700  underline ">Plamen Dochev</span>
+              &nbsp;
+              <span className="inline-flex space-x-2 ml-1">
+                <a
+                  href="https://www.linkedin.com/in/plamendochev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transform hover:scale-125 transition-all duration-300 ease-in-out"
+                  aria-label="LinkedIn Profile"
+                >
+                  <LinkedIn className="w-4 h-4 md:w-5 md:h-5" />
+                </a>
+                <a
+                  href="https://github.com/PDochev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transform hover:scale-125 transition-all duration-300 ease-in-out"
+                  aria-label="GitHub Profile"
+                >
+                  <Github className="w-4 h-4 md:w-5 md:h-5" />
+                </a>
+              </span>
             </p>
           </div>
         </div>
