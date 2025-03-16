@@ -1,6 +1,6 @@
 export async function getStations() {
   const response = await fetch(
-    "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=100",
+    "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=200",
     {
       cache: "no-store", // Don't cache this request
     }
@@ -23,7 +23,7 @@ export async function getStationReadings(stationId: string) {
   const stationRef = stationId.split("/").pop();
 
   const response = await fetch(
-    `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationRef}/readings?_sorted&_limit=100`,
+    `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationRef}/readings?_sorted&_limit=200`,
     {
       cache: "no-store", // Don't cache this request
     }

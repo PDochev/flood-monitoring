@@ -215,7 +215,7 @@ export default function StationChart({ stationId }: StationChartProps) {
   );
 
   return (
-    <Card className="w-full xl:w-3/4 mt-8 mx-auto shadow-xl mb-12">
+    <Card className="w-full xl:w-3/4 mt-8 mx-auto shadow-xl mb-12 bg-gray-50/80">
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
