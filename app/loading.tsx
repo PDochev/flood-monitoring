@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/20 backdrop-blur-2xl">
+    <div className="fixed inset-0 z-10 flex items-center justify-center bg-white/20 backdrop-blur-2xl">
       <div className="grid min-h-[140px] w-full place-items-center rounded-lg p-6 lg:overflow-visible">
         <svg
           className="text-gray-300 animate-spin"

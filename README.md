@@ -1,8 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FloodWatch
+
+FloodWatch is a real-time flood monitoring application that provides up-to-date water level data from monitoring stations across the United Kingdom.
+
+![FloodWatch Preview](/public/floodWatch.png)
+
+## Overview
+
+FloodWatch offers a user-friendly interface for tracking water levels at various monitoring stations, helping users stay informed about potential flooding risks. The application fetches data from the official UK Environment Agency's flood monitoring API and displays it in an intuitive, interactive format.
+
+## Features
+
+- **Real-time Data**: Access the latest water level readings from flood monitoring stations
+- **Interactive Station Selection**: Choose from hundreds of monitoring stations across the UK
+- **Visual Data Representation**: View water level data through interactive charts
+- **Tabular View Option**: Switch between chart and table views for different data analysis needs
+- **Responsive Design**: Access the application on desktop or mobile devices
+- **24-Hour Historical Data**: See water level trends over the past 24 hours
+
+## Technology Stack
+
+- **Frontend**: React, Next.js 15
+- **UI Components**: ShadCn UI, Tailwind CSS
+- **Data Visualization**: Recharts
+- **API Integration**: UK Environment Agency Flood Monitoring API
+- **Typescript**: For type safety and code quality
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.18.0 or higher
+- npm, yarn, pnpm, or bun package manager
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/PDochev/flood-monitoring.git
+cd flood-monitoring
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+# or
+bun install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +66,42 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+FloodWatch integrates with the [UK Environment Agency's Flood Monitoring API](https://environment.data.gov.uk/flood-monitoring/doc/reference). The application fetches:
 
-## Learn More
+- A list of monitoring stations
+- Real-time water level readings for each station
+- Historical data for the past 24 hours
 
-To learn more about Next.js, take a look at the following resources:
+<!-- ## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request -->
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is licensed under the [MIT License](LICENSE.md).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Acknowledgements
+
+- [UK Environment Agency](https://environment.data.gov.uk/) for providing the flood monitoring data
+- [Next.js](https://nextjs.org/) for the React framework
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Recharts](https://recharts.org/) for data visualization
+- [ShadcnUI](https://ui.shadcn.com/) for the UI components
+
+## Contact
+
+Plamen Dochev - [LinkedIn](https://www.linkedin.com/in/plamendochev/) - [GitHub](https://github.com/PDochev)
+
+Project Link: [https://github.com/PDochev/flood-monitoring](https://github.com/PDochev/flood-monitoring)
+
+Deployed Site: [https://flood-watch-khaki.vercel.app/](https://flood-watch-khaki.vercel.app/)
