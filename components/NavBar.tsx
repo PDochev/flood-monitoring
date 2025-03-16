@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function NavBar() {
   return (
-    <nav className="sticky top-0 z-10 bg-gray-800">
+    <nav className="sticky top-0 z-10 bg-black">
       <ul className="w-full flex flex-row h-16 justify-between items-center p-4">
         <li>
           <Link

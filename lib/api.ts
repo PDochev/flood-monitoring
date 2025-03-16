@@ -1,7 +1,9 @@
 export async function getStations() {
   const response = await fetch(
     "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=100",
-    { next: { revalidate: 3600 } } // This will revalidate the data every hour
+    {
+      cache: "no-store", // Don't cache this request
+    }
   );
 
   if (!response.ok) {
@@ -22,7 +24,9 @@ export async function getStationReadings(stationId: string) {
 
   const response = await fetch(
     `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationRef}/readings?_sorted&_limit=100`,
-    { next: { revalidate: 300 } } // Revalidate every 5 minutes
+    {
+      cache: "no-store", // Don't cache this request
+    }
   );
 
   if (!response.ok) {

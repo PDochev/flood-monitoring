@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   LineChart,
   Line,
@@ -31,17 +31,7 @@ import { Button } from "@/components/ui/button";
 import { BarChart3, Table2 } from "lucide-react";
 import type { Reading } from "@/lib/definitions";
 import { Loader2 } from "lucide-react";
-
-interface StationChartProps {
-  stationId: string | null;
-}
-
-interface ChartData {
-  dateTime: string;
-  time: string;
-  stage?: number;
-  downstream?: number;
-}
+import { StationChartProps, ChartData } from "@/lib/definitions";
 
 type ViewMode = "chart" | "table";
 
@@ -52,41 +42,46 @@ export default function StationChart({ stationId }: StationChartProps) {
   const [hasReadings, setHasReadings] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("chart");
 
-  useEffect(() => {
-    async function fetchReadings() {
-      if (!stationId) return;
+  // Function to fetch readings data
+  const fetchReadingsData = useCallback(async () => {
+    if (!stationId) return;
 
-      setLoading(true);
-      setError(null);
-      setHasReadings(false);
+    setLoading(true);
+    setError(null);
+    setHasReadings(false);
 
-      try {
-        const response = await fetch(
-          `/api/readings?stationId=${encodeURIComponent(stationId)}`
-        );
+    try {
+      // Add a timestamp to bust cache
+      const timestamp = new Date().getTime();
+      const response = await fetch(
+        `/api/readings?stationId=${encodeURIComponent(
+          stationId
+        )}&_t=${timestamp}`
+      );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch station readings");
-        }
-
-        const data = await response.json();
-
-        // Check if we have any readings at all
-        setHasReadings(data.length > 0);
-
-        // Process the data for the chart
-        const processedData = processReadingsData(data);
-        setChartData(processedData);
-      } catch (err) {
-        console.error("Error fetching readings:", err);
-        setError("Failed to load station readings. Please try again.");
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to fetch station readings");
       }
-    }
 
-    fetchReadings();
+      const data = await response.json();
+
+      // Check if we have any readings at all
+      setHasReadings(data.length > 0);
+
+      // Process the data for the chart
+      const processedData = processReadingsData(data);
+      setChartData(processedData);
+    } catch (err) {
+      console.error("Error fetching readings:", err);
+      setError("Failed to load station readings. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }, [stationId]);
+
+  useEffect(() => {
+    fetchReadingsData();
+  }, [fetchReadingsData]);
 
   // Process the readings data for the chart
   function processReadingsData(readings: Reading[]): ChartData[] {
@@ -230,7 +225,7 @@ export default function StationChart({ stationId }: StationChartProps) {
             </CardDescription>
           </div>
           {hasReadings && chartData.length > 0 && (
-            <div className="flex justify-around items-center space-x-2">
+            <div className="flex items-center justify-around space-x-2">
               <span className="text-sm text-muted-foreground mr-2">
                 View as:
               </span>
@@ -256,6 +251,16 @@ export default function StationChart({ stationId }: StationChartProps) {
                   Table
                 </Button>
               </div>
+              {/* <Button
+                variant="outline"
+                size="sm"
+                onClick={fetchReadingsData}
+                className="ml-2"
+                aria-label="Refresh data"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button> */}
             </div>
           )}
         </div>
@@ -286,6 +291,7 @@ export default function StationChart({ stationId }: StationChartProps) {
             <div className="text-amber-600 font-medium text-lg">
               No current readings available
             </div>
+
             <p className="text-sm text-muted-foreground mt-2">
               Try selecting a different station to view water level data.
             </p>

@@ -1,6 +1,8 @@
 import { getStationReadings } from "@/lib/api";
 import { type NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic"; // This ensures the route is always dynamic
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const stationId = searchParams.get("stationId");
@@ -14,7 +16,13 @@ export async function GET(request: NextRequest) {
 
   try {
     const readings = await getStationReadings(stationId);
-    return NextResponse.json(readings);
+
+    // Set cache control headers to prevent browser caching
+    return NextResponse.json(readings, {
+      headers: {
+        "Cache-Control": "no-store, max-age=0, must-revalidate",
+      },
+    });
   } catch (error) {
     console.error("Error fetching station readings:", error);
     return NextResponse.json(
