@@ -73,7 +73,7 @@ export default function StationChart({ stationId }: StationChartProps) {
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <CardTitle>Water Level Readings</CardTitle>
-            <CardDescription>
+            <CardDescription className="mt-2">
               Last 24 hours of water level data for the selected station
             </CardDescription>
           </div>
