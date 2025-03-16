@@ -12,13 +12,15 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { BarChart3, Table2 } from "lucide-react";
-import type { Reading } from "@/lib/definitions";
+import type {
+  Reading,
+  StationChartProps,
+  ChartData,
+  ViewMode,
+} from "@/lib/definitions";
 import { Loader2 } from "lucide-react";
-import { StationChartProps, ChartData } from "@/lib/definitions";
 import renderChart from "../components/LinearChart";
 import renderTable from "../components/TableReadings";
-
-type ViewMode = "chart" | "table";
 
 export default function StationChart({ stationId }: StationChartProps) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
@@ -36,26 +38,19 @@ export default function StationChart({ stationId }: StationChartProps) {
     setHasReadings(false);
 
     try {
-      // Add a timestamp to bust cache
-      const timestamp = new Date().getTime();
+      // We use encodeURIComponent() when constructing URLs to ensure that special characters in parameter values are properly encoded so they don't interfere with URL syntax.
+      // The stationId might contain characters that have special meaning in URLs, such as: /, ?, &, etc.
       const response = await fetch(
         `/api/readings?stationId=${encodeURIComponent(
           stationId
-        )}&_t=${timestamp}`
+        )}&_t=${Date.now()}`
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch station readings");
-      }
+      if (!response.ok) throw new Error("Failed to fetch station readings");
 
       const data = await response.json();
-
-      // Check if we have any readings at all
       setHasReadings(data.length > 0);
-
-      // Process the data for the chart
-      const processedData = processReadingsData(data);
-      setChartData(processedData);
+      setChartData(processReadingsData(data));
     } catch (err) {
       console.error("Error fetching readings:", err);
       setError("Failed to load station readings. Please try again.");
@@ -63,6 +58,10 @@ export default function StationChart({ stationId }: StationChartProps) {
       setLoading(false);
     }
   }, [stationId]);
+
+  useEffect(() => {
+    fetchReadingsData();
+  }, [fetchReadingsData]);
 
   useEffect(() => {
     fetchReadingsData();
@@ -131,12 +130,12 @@ export default function StationChart({ stationId }: StationChartProps) {
               <span className="text-sm text-muted-foreground mr-2">
                 View as:
               </span>
-              <div className="inline-flex rounded-md shadow-sm">
+              <div className="inline-flex rounded-md">
                 <Button
                   variant={viewMode === "chart" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("chart")}
-                  className="rounded-r-none"
+                  className="rounded-r-none "
                   aria-label="View as chart"
                 >
                   <BarChart3 className="h-4 w-4 mr-2" />

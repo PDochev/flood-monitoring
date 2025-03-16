@@ -42,3 +42,5 @@ export interface TableDataProps {
   hasStageData: boolean;
   hasDownstreamData: boolean;
 }
+
+export type ViewMode = "chart" | "table";

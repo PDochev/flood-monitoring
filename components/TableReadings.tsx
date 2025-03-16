@@ -19,7 +19,7 @@ const renderTable = ({
       <TableCaption>Hourly water level readings (m)</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Time</TableHead>
+          <TableHead className="w-[400px]">Time</TableHead>
           {hasStageData && <TableHead>Stage (m)</TableHead>}
           {hasDownstreamData && <TableHead>Downstream (m)</TableHead>}
         </TableRow>
