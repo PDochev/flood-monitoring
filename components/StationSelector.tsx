@@ -6,17 +6,11 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import type { Station } from "@/lib/definitions";
-
-interface StationSelectorProps {
-  stations: Station[];
-  onStationSelect: (stationId: string | null) => void;
-}
+import type { StationSelectorProps } from "@/lib/definitions";
 
 export default function StationSelector({
   stations,
@@ -41,7 +35,6 @@ export default function StationSelector({
         </SelectTrigger>
         <SelectContent className="w-[280px]">
           <SelectGroup>
-            <SelectLabel>Stations</SelectLabel>
             {stations && stations.length > 0 ? (
               stations.map((station) => (
                 <SelectItem key={station["@id"]} value={station["@id"]}>

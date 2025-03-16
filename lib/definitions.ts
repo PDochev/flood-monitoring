@@ -4,6 +4,11 @@ export interface Station {
   catchmentName?: string;
 }
 
+export interface StationSelectorProps {
+  stations: Station[];
+  onStationSelect: (stationId: string | null) => void;
+}
+
 export interface Reading {
   "@id": string;
   dateTime: string;
@@ -24,4 +29,16 @@ export interface ChartData {
   time: string;
   stage?: number;
   downstream?: number;
+}
+
+export interface RenderChartProps {
+  chartData: ChartData[];
+  hasStageData: boolean;
+  hasDownstreamData: boolean;
+}
+
+export interface TableDataProps {
+  tableData: ChartData[];
+  hasStageData: boolean;
+  hasDownstreamData: boolean;
 }

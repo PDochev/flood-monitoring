@@ -1,16 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+
 import {
   Card,
   CardContent,
@@ -18,20 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { Button } from "@/components/ui/button";
 import { BarChart3, Table2 } from "lucide-react";
 import type { Reading } from "@/lib/definitions";
 import { Loader2 } from "lucide-react";
 import { StationChartProps, ChartData } from "@/lib/definitions";
+import renderChart from "../components/LinearChart";
+import renderTable from "../components/TableReadings";
 
 type ViewMode = "chart" | "table";
 
@@ -131,89 +116,6 @@ export default function StationChart({ stationId }: StationChartProps) {
     return null;
   }
 
-  const renderChart = () => (
-    <div className="h-[400px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={chartData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="time"
-            label={{
-              value: "Time",
-              position: "insideBottomRight",
-              offset: -10,
-            }}
-          />
-          <YAxis
-            label={{
-              value: "Water Level (m)",
-              angle: -90,
-              position: "insideLeft",
-            }}
-          />
-          <Tooltip />
-          <Legend />
-          {hasStageData && (
-            <Line
-              type="monotone"
-              dataKey="stage"
-              name="Stage Level"
-              stroke="#2563eb"
-              activeDot={{ r: 8 }}
-              strokeWidth={2}
-            />
-          )}
-          {hasDownstreamData && (
-            <Line
-              type="monotone"
-              dataKey="downstream"
-              name="Downstream Level"
-              stroke="#16a34a"
-              strokeWidth={2}
-            />
-          )}
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-
-  const renderTable = () => (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableCaption>Hourly water level readings (m)</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Time</TableHead>
-            {hasStageData && <TableHead>Stage (m)</TableHead>}
-            {hasDownstreamData && <TableHead>Downstream (m)</TableHead>}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tableData.map((reading) => (
-            <TableRow key={reading.dateTime}>
-              <TableCell className="font-medium">{reading.time}</TableCell>
-              {hasStageData && (
-                <TableCell>
-                  {reading.stage !== undefined ? reading.stage.toFixed(3) : "-"}
-                </TableCell>
-              )}
-              {hasDownstreamData && (
-                <TableCell>
-                  {reading.downstream !== undefined
-                    ? reading.downstream.toFixed(3)
-                    : "-"}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
-
   return (
     <Card className="w-full xl:w-3/4 mt-8 mx-auto shadow-xl mb-12 bg-gray-50/80">
       <CardHeader>
@@ -277,9 +179,9 @@ export default function StationChart({ stationId }: StationChartProps) {
         ) : hasReadings ? (
           chartData.length > 0 ? (
             viewMode === "chart" ? (
-              renderChart()
+              renderChart({ chartData, hasStageData, hasDownstreamData })
             ) : (
-              renderTable()
+              renderTable({ tableData, hasStageData, hasDownstreamData })
             )
           ) : (
             <div className="flex justify-center items-center h-[400px] text-muted-foreground">
