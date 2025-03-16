@@ -60,9 +60,9 @@ export default async function Home() {
             </div>
           </div>
           <div className="flex flex-row mt-8 border-t border-gray-500 pt-4 text-center text-gray-400 text-sm mb-2 ">
-            <p className="flex items-center flex-wrap justify-center w-full">
+            <p className="flex items-center flex-wrap justify-center w-full text-gray-500">
               &copy; {new Date().getFullYear()} FloodWatch. Made by &nbsp;
-              <span className="text-gray-700  underline ">Plamen Dochev</span>
+              <span className="text-gray-800 underline ">Plamen Dochev</span>
               &nbsp;
               <span className="inline-flex space-x-2 ml-1">
                 <a
