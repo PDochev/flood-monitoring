@@ -4,7 +4,6 @@ import NavBar from "@/components/NavBar";
 import { getStations } from "@/lib/api";
 
 export default async function Home() {
-  // Fetch stations on the server
   const stations = await getStations();
 
   return (
@@ -12,12 +11,12 @@ export default async function Home() {
       <NavBar />
       <main className="mx-auto max-w-[1960px] p-4 mb-1 flex-grow w-full">
         <div className="flex justify-center items-center">
-          <h1 className="scroll-m-20 text-3xl sm:text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-8">
+          <h1 className="scroll-m-20 text-3xl sm:text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-8 text-center">
             Welcome to FloodWatch
           </h1>
         </div>
         <div className="mb-8">
-          <p className="text-md md:text-xl text-center text-gray-700 max-w-3xl mx-auto">
+          <p className="text-md md:text-xl text-center text-gray-600 max-w-3xl mx-auto font-light">
             Monitor real-time water levels at flood monitoring stations across
             the United Kingdom. Select a station to view detailed water level
             data for the past 24 hours.
@@ -59,7 +58,7 @@ export default async function Home() {
               </a>
             </div>
           </div>
-          <div className="mt-8 border-t border-gray-700 pt-4 text-center text-gray-400 text-sm mb-2">
+          <div className="mt-8 border-t border-gray-500 pt-4 text-center text-gray-400 text-sm mb-2">
             <p>
               &copy; {new Date().getFullYear()} FloodWatch. All rights reserved.
               Made by {""}

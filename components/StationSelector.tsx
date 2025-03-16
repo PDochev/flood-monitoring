@@ -25,7 +25,7 @@ export default function StationSelector({
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-      <Label className="text-md">Select a measurement station</Label>
+      <Label className=" text-sm">Select a measurement station</Label>
       <Select
         onValueChange={handleStationChange}
         value={selectedStation || undefined}
