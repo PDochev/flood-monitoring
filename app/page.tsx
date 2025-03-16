@@ -8,9 +8,9 @@ export default async function Home() {
   const stations = await getStations();
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <NavBar />
-      <main className="mx-auto max-w-[1960px] p-4 mb-1">
+      <main className="mx-auto max-w-[1960px] p-4 mb-1 flex-grow w-full">
         <div className="flex justify-center items-center">
           <h1 className="scroll-m-20 text-3xl sm:text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-8">
             Welcome to FloodWatch
@@ -24,16 +24,18 @@ export default async function Home() {
           </p>
         </div>
 
-        <Suspense fallback={<div>Loading stations...</div>}>
-          <StationDataContainer stations={stations} />
-        </Suspense>
+        <div className="w-full">
+          <Suspense fallback={<div>Loading stations...</div>}>
+            <StationDataContainer stations={stations} />
+          </Suspense>
+        </div>
       </main>
-      {/* <footer className="bg-gray-800 text-white py-8 ">
+      <footer className="bg-white text-black py-2 border-t border-gray-200 mt-auto">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-row  justify-between items-center mt-2 gap-8">
             <div className="mb-4 md:mb-0">
-              <h2 className="text-xl font-bold">FloodWatch</h2>
-              <p className="text-gray-300 mt-2">
+              <h2 className="text-sm md:text-md font-bold">FloodWatch</h2>
+              <p className="text-sm  md:text-md text-gray-500 mt-2">
                 Real-time flood monitoring for the UK
               </p>
             </div>
@@ -43,7 +45,7 @@ export default async function Home() {
                 href="https://environment.data.gov.uk/flood-monitoring/doc/reference"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
+                className="text-sm md:text-md text-gray-500 hover:text-black"
               >
                 Data API
               </a>
@@ -51,20 +53,28 @@ export default async function Home() {
                 href="https://check-for-flooding.service.gov.uk/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
+                className="text-sm md:text-md text-gray-500 hover:text-black"
               >
                 Official Flood Information
               </a>
             </div>
           </div>
-          <div className="mt-8 border-t border-gray-700 pt-4 text-center text-gray-400 text-sm">
+          <div className="mt-8 border-t border-gray-700 pt-4 text-center text-gray-400 text-sm mb-2">
             <p>
-              This application is for educational purposes only. For official
-              flood warnings, please visit the Environment Agency website.
+              &copy; {new Date().getFullYear()} FloodWatch. All rights reserved.
+              Made by {""}
+              <a
+                href="https://github.com/PDochev/flood-monitoring"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-black underline hover:animate-pulse"
+              >
+                Plamen Dochev
+              </a>
             </p>
           </div>
         </div>
-      </footer> */}
-    </>
+      </footer>
+    </div>
   );
 }
