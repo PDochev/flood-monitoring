@@ -12,15 +12,14 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { BarChart3, Table2 } from "lucide-react";
-import type {
-  Reading,
-  StationChartProps,
-  ChartData,
-  ViewMode,
-} from "@/lib/definitions";
+import type { StationChartProps, ChartData, ViewMode } from "@/lib/definitions";
 import { Loader2 } from "lucide-react";
 import renderChart from "../components/LinearChart";
 import renderTable from "../components/TableReadings";
+import {
+  fetchReadingsData,
+  processReadingsData,
+} from "@/lib/services/readings";
 
 export default function StationChart({ stationId }: StationChartProps) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
@@ -29,8 +28,8 @@ export default function StationChart({ stationId }: StationChartProps) {
   const [hasReadings, setHasReadings] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("chart");
 
-  // Function to fetch readings data
-  const fetchReadingsData = useCallback(async () => {
+  // Function to fetch and process readings data
+  const loadReadingsData = useCallback(async () => {
     if (!stationId) return;
 
     setLoading(true);
@@ -38,17 +37,7 @@ export default function StationChart({ stationId }: StationChartProps) {
     setHasReadings(false);
 
     try {
-      // We use encodeURIComponent() when constructing URLs to ensure that special characters in parameter values are properly encoded so they don't interfere with URL syntax.
-      // The stationId might contain characters that have special meaning in URLs, such as: /, ?, &, etc.
-      const response = await fetch(
-        `/api/readings?stationId=${encodeURIComponent(
-          stationId
-        )}&_t=${Date.now()}`
-      );
-
-      if (!response.ok) throw new Error("Failed to fetch station readings");
-
-      const data = await response.json();
+      const data = await fetchReadingsData(stationId);
       setHasReadings(data.length > 0);
       setChartData(processReadingsData(data));
     } catch (err) {
@@ -60,57 +49,8 @@ export default function StationChart({ stationId }: StationChartProps) {
   }, [stationId]);
 
   useEffect(() => {
-    fetchReadingsData();
-  }, [fetchReadingsData]);
-
-  // Process the readings data for the chart
-  function processReadingsData(readings: Reading[]): ChartData[] {
-    // Record<K, V> is a utility type in TypeScript that creates an object type with keys of type K and values of type V.
-    // groupedReadings is an object
-    // Its keys are strings in this case, date-time strings (timestapms)
-    // Its values are objects of type ChartData
-    const groupedReadings: Record<string, ChartData> = {};
-
-    // Loop through each reading
-    for (const reading of readings) {
-      // Get the dateTime from the reading
-      const dateTime = reading.dateTime;
-
-      // This block of code is checking if an entry for a specific timestamp already exists in the groupedReadings object.
-      // If it doesn't, it creates a new entry.
-      if (!groupedReadings[dateTime]) {
-        groupedReadings[dateTime] = {
-          dateTime,
-          time: new Date(dateTime).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        };
-      }
-
-      // Add the appropriate value based on the measure type
-      // The measure type is a string that describes the type of reading
-      // It can be "stage" or "downstage"
-      // If the measure type includes "stage" but not "downstage", we set the stage value
-      // If the measure type includes "downstage", we set the downstream value
-      if (
-        reading.measure.includes("stage") &&
-        !reading.measure.includes("downstage")
-      ) {
-        groupedReadings[dateTime].stage = reading.value;
-      } else if (reading.measure.includes("downstage")) {
-        groupedReadings[dateTime].downstream = reading.value;
-      }
-    }
-
-    // Object.values() returns an array of a given object's own enumerable property values
-    // We sort the array of values by date-time
-    // This way we get an array of ChartData objects sorted by date-time
-    // This array will be used to render the chart
-    return Object.values(groupedReadings).sort(
-      (a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
-    );
-  }
+    loadReadingsData();
+  }, [loadReadingsData]);
 
   // Check if the data has stage or downstream values
   const hasStageData = chartData.some((item) => item.stage !== undefined);
