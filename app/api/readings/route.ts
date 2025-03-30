@@ -4,6 +4,11 @@ import { type NextRequest, NextResponse } from "next/server";
 // Force dynamic rendering
 // This will ensure that the API route is always rendered dynamically
 // even when the page is statically generated
+// It tells Next.js to always execute the route handler for each incoming request,
+// skipping any static optimization or caching that Next.js might otherwise apply.
+// Why it's necessary for FloodWatch:
+// Data Freshness: Ensures that users always receive the most up-to-date readings for the station.
+// Bypassing Static Generation: Next.js by default tries to optimize routes by statically generating them at build time where possible. For an API that serves real-time data, this would result in stale data.
 export const dynamic = "force-dynamic";
 
 // GET /api/readings
@@ -38,6 +43,8 @@ export async function GET(request: NextRequest) {
     // This way we always fetch the latest data from the API
     // and avoid showing stale data to the user
     // Since we want to display every 24h data, we set max-age=0 , so that the browser always fetches the latest data
+    // The must-revalidate directive tells any caching mechanism (browsers, CDNs, proxies) that once a cached response becomes stale,
+    // it must check with the origin server before using the cached version.
     return NextResponse.json(readings, {
       headers: {
         "Cache-Control": "no-store, max-age=0, must-revalidate",

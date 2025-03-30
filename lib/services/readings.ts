@@ -8,6 +8,18 @@ export const fetchReadingsData = async (
   // We use encodeURIComponent() when constructing URLs to ensure that special characters
   // in parameter values are properly encoded so they don't interfere with URL syntax.
   // The stationId might contain characters that have special meaning in URLs, such as: /, ?, &, etc.
+  // If the stationId contained characters like & or ?, it would break the URL structure.
+  // For example, if stationId was "station&param=123", without encoding, the URL would become .../readings?stationId=station&param=123&_t=...
+  // which would be interpreted as having an additional parameter named param.
+
+  // Date.now() is used to append a timestamp to the URL
+  // This is a common technique to prevent caching issues, especially in development environments.
+  // By appending a timestamp, we ensure that the browser treats each request as unique,
+  // and it won't serve a cached version of the response.
+  // This is particularly useful when we want to ensure that we always get the latest data from the server
+  // and not a stale version from the browser cache.
+  // Its not compulsory to use it in production, but it can be helpful during development
+  // to avoid caching issues.
   const response = await fetch(
     `/api/readings?stationId=${encodeURIComponent(stationId)}&_t=${Date.now()}`
   );
@@ -56,10 +68,19 @@ export const processReadingsData = (readings: Reading[]): ChartData[] => {
     }
   }
 
+  // console.log("Grouped Readings:", groupedReadings);
+
   // Object.values() returns an array of a given object's own enumerable property values
   // We sort the array of values by date-time
   // This way we get an array of ChartData objects sorted by date-time
+  // new Date("2025-03-30T15:45:00Z").getTime() === 1743356700000
+  // This converts the date-time string to a timestamp (number of milliseconds since epoch)
+  // The getTime() method returns the number of milliseconds since January 1, 1970, 00:00:00 UTC
   // This array will be used to render the chart
+  // The subtraction a.time - b.time returns:
+  // - A negative number if a is before b (earlier)
+  // - A positive number if a is after b (later)
+  // - Zero if they are equal
   return Object.values(groupedReadings).sort(
     (a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
   );

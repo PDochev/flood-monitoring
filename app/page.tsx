@@ -3,6 +3,7 @@ import StationDataContainer from "../components/station-data-container";
 import NavBar from "@/components/NavBar";
 import { getStations } from "@/lib/api";
 import { LinkedIn, Github } from "@/components/icons";
+import { Loader2 } from "lucide-react";
 
 export default async function Home() {
   const stations = await getStations();
@@ -25,7 +26,13 @@ export default async function Home() {
         </div>
 
         <div className="w-full">
-          <Suspense fallback={<div>Loading stations...</div>}>
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-[400px]">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            }
+          >
             <StationDataContainer stations={stations} />
           </Suspense>
         </div>

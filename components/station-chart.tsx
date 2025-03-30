@@ -48,6 +48,17 @@ export default function StationChart({ stationId }: StationChartProps) {
     }
   }, [stationId]);
 
+  // Fetch readings data when the component mounts or when stationId changes
+  // This ensures that the data is always up to date when the user selects a different station
+  // or when the component is first rendered.
+  // The useCallback hook is used to memoize the loadReadingsData function
+  // so that it doesn't change on every render, which would cause the useEffect to run
+  // every time the component re-renders.
+  // This is important for performance reasons, especially if the component is re-rendered frequently.
+  // By using useCallback, we ensure that the function reference remains the same
+  // unless the dependencies (in this case, stationId) change.
+  // This prevents unnecessary re-fetching of data when the component re-renders
+  // but the stationId remains the same.
   useEffect(() => {
     loadReadingsData();
   }, [loadReadingsData]);
