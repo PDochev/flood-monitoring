@@ -100,7 +100,7 @@ export default function StationChart({ stationId }: StationChartProps) {
                   variant={viewMode === "chart" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("chart")}
-                  className="rounded-r-none "
+                  className="rounded-r-none cursor-pointer"
                   aria-label="View as chart"
                 >
                   <BarChart3 className="h-4 w-4 mr-2" />
@@ -110,7 +110,7 @@ export default function StationChart({ stationId }: StationChartProps) {
                   variant={viewMode === "table" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("table")}
-                  className="rounded-l-none"
+                  className="rounded-l-none cursor-pointer"
                   aria-label="View as table"
                 >
                   <Table2 className="h-4 w-4 mr-2" />

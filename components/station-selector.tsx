@@ -31,7 +31,7 @@ export default function StationSelector({
         value={selectedStation || undefined}
       >
         <SelectTrigger
-          className="w-[280px]"
+          className="w-[280px] cursor-pointer"
           aria-label="Station selection dropdown"
         >
           <SelectValue placeholder="Select a station" />
