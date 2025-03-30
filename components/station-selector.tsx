@@ -30,7 +30,10 @@ export default function StationSelector({
         onValueChange={handleStationChange}
         value={selectedStation || undefined}
       >
-        <SelectTrigger className="w-[280px]">
+        <SelectTrigger
+          className="w-[280px]"
+          aria-label="Station selection dropdown"
+        >
           <SelectValue placeholder="Select a station" />
         </SelectTrigger>
         <SelectContent className="w-[280px]">

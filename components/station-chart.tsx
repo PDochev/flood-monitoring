@@ -72,6 +72,8 @@ export default function StationChart({ stationId }: StationChartProps) {
   // Get a subset of data for the table to keep it concise
   // Show every hour instead of every 15 minutes
   // This way we reduce the number of rows in the table
+  // index % 4 === 0 means we take every 4th item
+  // This will be true for indexes 0, 4, 8, 12, 16, etc.
   const tableData = chartData.filter((_, index) => index % 4 === 0);
 
   if (!stationId) {
