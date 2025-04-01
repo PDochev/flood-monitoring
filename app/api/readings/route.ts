@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 // API route to fetch readings for a given station
 // This route expects a query parameter `stationId` which is the ID of the station
 // for which we want to fetch readings
-// Example: /api/readings?stationId=123456
+// Example: /api/readings?stationId=1029TH
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const stationId = searchParams.get("stationId");

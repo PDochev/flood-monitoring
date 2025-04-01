@@ -68,7 +68,7 @@ export const processReadingsData = (readings: Reading[]): ChartData[] => {
     }
   }
 
-  // console.log("Grouped Readings:", groupedReadings);
+  console.log("Grouped Readings:", groupedReadings);
 
   // Object.values() returns an array of a given object's own enumerable property values
   // We sort the array of values by date-time
