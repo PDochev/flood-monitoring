@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Clarity from "@microsoft/clarity";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
-
-const projectId = "ribirlzxbb";
 
 export const metadata: Metadata = {
   title: "FloodWatch",
@@ -21,7 +18,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  Clarity.init(projectId);
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
