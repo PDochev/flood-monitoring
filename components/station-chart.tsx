@@ -120,11 +120,11 @@ export default function StationChart({ stationId }: StationChartProps) {
               {/* <Button
                 variant="outline"
                 size="sm"
-                onClick={fetchReadingsData}
+                onClick={loadReadingsData}
                 className="ml-2"
                 aria-label="Refresh data"
               >
-                <RefreshCw className="h-4 w-4 mr-2" />
+                <RefreshCcw className="h-4 w-4 mr-2" />
                 Refresh
               </Button> */}
             </div>
